@@ -34,6 +34,10 @@ void events(){
 			case SDL_QUIT:
 				running = false;
 				break;
+			case SDL_KEYDOWN:
+				case SDLK_ESCAPE:
+					running = false;
+					break;
 		}
 	}
 }
