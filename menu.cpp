@@ -2,7 +2,9 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_opengl.h>
 #include "draw.h"
+#ifdef __WINDOWS__
 #undef main
+#endif
 
 using namespace std;
 
@@ -55,7 +57,7 @@ void FPSCap(){
 
 }
 
-int main(){
+int main(int argc, char *argv[]){
 	screen = SDL_SetVideoMode(width, height, 32, SDL_OPENGL);
 	SDL_WM_SetCaption("Menu", NULL);
 	init();

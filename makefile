@@ -1,5 +1,5 @@
 # The name of the executable to produce
-EXE = menu.exe
+EXE = Menu.exe
 # The objects to link
 OBJS = menu.o draw.o
 
