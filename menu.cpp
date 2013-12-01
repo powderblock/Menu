@@ -22,6 +22,7 @@ GLuint texid;
 
 bool running = true;
 Uint32 start;
+Uint32 space;
 
 //Functions:
 void render();
@@ -85,8 +86,10 @@ void init(){
 
 void render(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glBindTexture(GL_TEXTURE_2D, texid);
+	glBindTexture(GL_TEXTURE_2D, space);
+	draw(0, 0, 100, 100);
 	for(int i = 0; i < buttons.size(); ++i){
+		glBindTexture(GL_TEXTURE_2D, texid);
 		draw(buttons[i].x, buttons[i].y, buttons[i].w, buttons[i].h);
 	}
 	SDL_GL_SwapBuffers();
@@ -105,10 +108,11 @@ int main(int argc, char *argv[]){
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	texid = SOIL_load_OGL_texture("images/menu/play.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
+	space = SOIL_load_OGL_texture("images/menu/space.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
 	init();
 	buttons.push_back(button(0.0, 15, 50, 15, button1));
 	buttons.push_back(button(0.0, -12, 50, 15, button2));
-	
+
 	while(running){
 		update();
 	}
