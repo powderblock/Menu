@@ -13,8 +13,8 @@ using namespace std;
 
 //Vars:
 int FPS = 60;
-//Width and height of the window:
-int width = 600, height = 600;
+
+float mouseX, mouseY;
 
 SDL_Surface *screen;
 
@@ -40,22 +40,19 @@ struct button{
 	float x, y, w, h;
 	void (*onClick) (void);
 	button(float, float, float, float, void (*) (void));
-	void wasClicked(float x, float y){
-		//Check for collision
-	}
+	void wasClicked(float, float);
 };
+
+void button::wasClicked(float xClick, float yClick){
+	float left = x - (w / 2); float right = x + (w / 2); float top = y - (h / 2); float bottom = y + (h / 2);
+	if(xClick > left && xClick < right && yClick > top && yClick < bottom){
+		this->onClick();
+	}
+}
 
 button::button(float x, float y, float w, float h, void (*clickFunction) (void)): x(x), y(y), w(w), h(h), onClick(clickFunction){};
 
 vector<button> buttons;
-
-bool collide(float x, float y, button A){
-	float leftA = A.x; float rightA = A.x + A.w; float topA = A.y; float bottomA = A.y + A.h;
-    if(x > leftA && x < rightA && y > topA && y < bottomA){
-		return true;
-	}
-	return false;
-}
 
 void update(){
 	start = SDL_GetTicks();
@@ -64,16 +61,16 @@ void update(){
 	FPSCap();
 }
 
-void button1(){
-	cout << "You clicked the first button!" << endl;
+void playButton(){
+	cout << "You clicked play!" << endl;
 }
 
-void button2(){
-	cout << "You clicked the second button!" << endl;
+void optionsButton(){
+	cout << "You clicked options!" << endl;
 }
 
-void button3(){
-	cout << "You clicked the third button!" << endl;
+void quitButton(){
+	running = false;
 }
 
 void events(){
@@ -83,6 +80,16 @@ void events(){
 			case SDL_QUIT:
 				running = false;
 				break;
+			
+			case SDL_MOUSEBUTTONDOWN:
+				mouseX = event.button.x;
+				mouseY = event.button.y;
+				mouse(&mouseX, &mouseY);
+				for(int i = 0; i < buttons.size(); ++i){
+					buttons[i].wasClicked(mouseX, mouseY);
+				}
+				break;
+			
 			case SDL_KEYDOWN:
 				case SDLK_ESCAPE:
 					running = false;
@@ -137,9 +144,9 @@ int main(int argc, char *argv[]){
 	options = SOIL_load_OGL_texture("images/menu/options.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
 	quitTex = SOIL_load_OGL_texture("images/menu/quit.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
 	init();
-	buttons.push_back(button(0.0, 20, 50, 15, button1));
-	buttons.push_back(button(0.0, -5, 50, 15, button2));
-	buttons.push_back(button(0.0, -30, 50, 15, button3));
+	buttons.push_back(button(0.0, 20, 50, 15, playButton));
+	buttons.push_back(button(0.0, -5, 50, 15, optionsButton));
+	buttons.push_back(button(0.0, -30, 50, 15, quitButton));
 
 	while(running){
 		update();

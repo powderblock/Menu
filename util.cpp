@@ -2,7 +2,8 @@
 #include "util.h"
 
 //variables
-float worldsize = 10;
+float worldsize = 50;
+int width = 600, height = 600;
 float aspect = width/(float)height;
 
 //Quits and handles cleanup
