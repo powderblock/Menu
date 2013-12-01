@@ -1,7 +1,7 @@
 # The name of the executable to produce
 EXE = Menu.exe
 # The objects to link
-OBJS = menu.o draw.o util.o
+OBJS = menu.o draw.o util.o button.o
 
 # Get the name of the platform
 SYS = $(shell uname)

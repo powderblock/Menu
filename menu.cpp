@@ -5,6 +5,8 @@
 #include <vector>
 #include "draw.h"
 #include "util.h"
+#include "button.h"
+
 #ifndef __APPLE__
 #undef main
 #endif
@@ -35,22 +37,6 @@ void update();
 void button1();
 void button2();
 void button3();
-
-struct button{
-	float x, y, w, h;
-	void (*onClick) (void);
-	button(float, float, float, float, void (*) (void));
-	void wasClicked(float, float);
-};
-
-void button::wasClicked(float xClick, float yClick){
-	float left = x - (w / 2); float right = x + (w / 2); float top = y - (h / 2); float bottom = y + (h / 2);
-	if(xClick > left && xClick < right && yClick > top && yClick < bottom){
-		this->onClick();
-	}
-}
-
-button::button(float x, float y, float w, float h, void (*clickFunction) (void)): x(x), y(y), w(w), h(h), onClick(clickFunction){};
 
 vector<button> buttons;
 
@@ -111,18 +97,7 @@ void render(){
 	glBindTexture(GL_TEXTURE_2D, space);
 	draw(0, 0, 100, 100);
 	for(int i = 0; i < buttons.size(); ++i){
-		if(i == 0){
-			glBindTexture(GL_TEXTURE_2D, play);
-		}
-
-		if(i == 1){
-			glBindTexture(GL_TEXTURE_2D, options);
-		}
-		
-		if(i == 2){
-			glBindTexture(GL_TEXTURE_2D, quitTex);
-		}
-		draw(buttons[i].x, buttons[i].y, buttons[i].w, buttons[i].h);
+		buttons[i].drawButton();
 	}
 	SDL_GL_SwapBuffers();
 }
@@ -144,9 +119,9 @@ int main(int argc, char *argv[]){
 	options = SOIL_load_OGL_texture("images/menu/options.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
 	quitTex = SOIL_load_OGL_texture("images/menu/quit.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
 	init();
-	buttons.push_back(button(0.0, 20, 50, 15, playButton));
-	buttons.push_back(button(0.0, -5, 50, 15, optionsButton));
-	buttons.push_back(button(0.0, -30, 50, 15, quitButton));
+	buttons.push_back(button(0.0, 20, 50, 15, play, playButton));
+	buttons.push_back(button(0.0, -5, 50, 15, options, optionsButton));
+	buttons.push_back(button(0.0, -30, 50, 15, quitTex, quitButton));
 
 	while(running){
 		update();
