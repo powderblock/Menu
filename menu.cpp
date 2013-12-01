@@ -22,6 +22,12 @@ void init();
 void events();
 void update();
 
+struct button{
+	float x, y, w, h;
+	void (*onClick)(void);
+	button(float x, float y, float w, float h, void (*clickFunction) (void)): x(x), y(y), w(w), h(h), onClick(clickFunction){}
+};
+
 void update(){
 	events();
 	render();
