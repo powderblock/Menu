@@ -90,8 +90,8 @@ int main(int argc, char *argv[]){
 	screen = SDL_SetVideoMode(width, height, 32, SDL_OPENGL);
 	SDL_WM_SetCaption("Menu", NULL);
 	init();
-	buttons.push_back(button(0.0, 6.0, 21.0, 2.0, button1));
-	buttons.push_back(button(0.0, 8.0, 21.0, 2.0, button2));
+	buttons.push_back(button(0.0, 15, 50, 15, button1));
+	buttons.push_back(button(0.0, -12, 50, 15, button2));
 	
 	while(running){
 		update();
