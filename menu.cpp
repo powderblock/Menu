@@ -49,6 +49,14 @@ button::button(float x, float y, float w, float h, void (*clickFunction) (void))
 
 vector<button> buttons;
 
+bool collide(float x, float y, button A){
+	float leftA = A.x; float rightA = A.x + A.w; float topA = A.y; float bottomA = A.y + A.h;
+    if(x > leftA && x < rightA && y > topA && y < bottomA){
+		return true;
+	}
+	return false;
+}
+
 void update(){
 	start = SDL_GetTicks();
 	events();
