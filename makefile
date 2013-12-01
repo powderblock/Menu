@@ -7,10 +7,11 @@ OBJS = menu.o draw.o util.o
 SYS = $(shell uname)
 # If it's on a mac do sdl-config
 ifneq (, $(findstring Darwin, $(SYS)))
+# CALEB: Add SOIL flags for MAC: (Please)
 LIBS = $(shell sdl-config --static-libs --cflags)
 else
 # If we're on windows, then set the libs manually
-LIBS = -lmingw32 -lSDLmain -lSDL -lopengl32
+LIBS = -lmingw32 -lSDLmain -lSDL -lSOIL -lopengl32
 endif
 
 # Link the full application

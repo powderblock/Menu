@@ -1,5 +1,6 @@
 #include <iostream>
 #include <SDL/SDL.h>
+#include <SOIL.h>
 #include <SDL/SDL_opengl.h>
 #include <vector>
 #include "draw.h"
@@ -10,14 +11,19 @@
 
 using namespace std;
 
+//Vars:
 int FPS = 60;
+//Width and height of the window:
 int width = 600, height = 500;
 
 SDL_Surface *screen;
 
+GLuint texid;
+
 bool running = true;
 Uint32 start;
 
+//Functions:
 void render();
 void FPSCap();
 void init();
@@ -40,8 +46,10 @@ button::button(float x, float y, float w, float h, void (*clickFunction) (void))
 vector<button> buttons;
 
 void update(){
+	start = SDL_GetTicks();
 	events();
 	render();
+	FPSCap();
 }
 
 void button1(){
@@ -77,6 +85,7 @@ void init(){
 
 void render(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glBindTexture(GL_TEXTURE_2D, texid);
 	for(int i = 0; i < buttons.size(); ++i){
 		draw(buttons[i].x, buttons[i].y, buttons[i].w, buttons[i].h);
 	}
@@ -84,12 +93,18 @@ void render(){
 }
 
 void FPSCap(){
-
+	if(1000 / FPS > SDL_GetTicks() - start){
+		SDL_Delay(1000 / FPS - (SDL_GetTicks() - start));
+	}
 }
 
 int main(int argc, char *argv[]){
 	screen = SDL_SetVideoMode(width, height, 32, SDL_OPENGL);
 	SDL_WM_SetCaption("Menu", NULL);
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	texid = SOIL_load_OGL_texture("images/menu/play.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
 	init();
 	buttons.push_back(button(0.0, 15, 50, 15, button1));
 	buttons.push_back(button(0.0, -12, 50, 15, button2));

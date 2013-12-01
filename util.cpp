@@ -1,5 +1,5 @@
 #include <SDL/SDL.h>
-#include "Util.h"
+#include "util.h"
 
 //variables
 float worldsize = 10;
