@@ -3,7 +3,7 @@
 #include <SDL/SDL_opengl.h>
 #include <vector>
 #include "draw.h"
-#ifdef __WINDOWS__
+#ifndef __APPLE__
 #undef main
 #endif
 
