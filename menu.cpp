@@ -14,15 +14,17 @@ using namespace std;
 //Vars:
 int FPS = 60;
 //Width and height of the window:
-int width = 600, height = 500;
+int width = 600, height = 600;
 
 SDL_Surface *screen;
 
-GLuint texid;
+GLuint play;
+GLuint space;
+GLuint options;
+GLuint quitTex;
 
 bool running = true;
 Uint32 start;
-Uint32 space;
 
 //Functions:
 void render();
@@ -32,6 +34,7 @@ void events();
 void update();
 void button1();
 void button2();
+void button3();
 
 struct button{
 	float x, y, w, h;
@@ -59,6 +62,10 @@ void button1(){
 
 void button2(){
 	cout << "You clicked the second button!" << endl;
+}
+
+void button3(){
+	cout << "You clicked the third button!" << endl;
 }
 
 void events(){
@@ -89,7 +96,17 @@ void render(){
 	glBindTexture(GL_TEXTURE_2D, space);
 	draw(0, 0, 100, 100);
 	for(int i = 0; i < buttons.size(); ++i){
-		glBindTexture(GL_TEXTURE_2D, texid);
+		if(i == 0){
+			glBindTexture(GL_TEXTURE_2D, play);
+		}
+
+		if(i == 1){
+			glBindTexture(GL_TEXTURE_2D, options);
+		}
+		
+		if(i == 2){
+			glBindTexture(GL_TEXTURE_2D, quitTex);
+		}
 		draw(buttons[i].x, buttons[i].y, buttons[i].w, buttons[i].h);
 	}
 	SDL_GL_SwapBuffers();
@@ -107,11 +124,14 @@ int main(int argc, char *argv[]){
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	texid = SOIL_load_OGL_texture("images/menu/play.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
+	play = SOIL_load_OGL_texture("images/menu/play.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
 	space = SOIL_load_OGL_texture("images/menu/space.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
+	options = SOIL_load_OGL_texture("images/menu/options.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
+	quitTex = SOIL_load_OGL_texture("images/menu/quit.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
 	init();
-	buttons.push_back(button(0.0, 15, 50, 15, button1));
-	buttons.push_back(button(0.0, -12, 50, 15, button2));
+	buttons.push_back(button(0.0, 20, 50, 15, button1));
+	buttons.push_back(button(0.0, -5, 50, 15, button2));
+	buttons.push_back(button(0.0, -30, 50, 15, button3));
 
 	while(running){
 		update();
