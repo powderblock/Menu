@@ -6,7 +6,7 @@ button::button(float x, float y, float w, float h, GLuint tex, void (*clickFunct
 
 void button::wasClicked(float xClick, float yClick){
 	float left = x - (w / 2); float right = x + (w / 2); float top = y - (h / 2); float bottom = y + (h / 2);
-		//Check for collision with the click and all of the buttons values:
+		//Check for collision with the click and the button's values:
 		if(xClick > left && xClick < right && yClick > top && yClick < bottom){
 			this->onClick();
 		}

@@ -23,6 +23,7 @@ SDL_Surface *screen;
 GLuint play;
 GLuint space;
 GLuint options;
+GLuint credits;
 GLuint quitTex;
 
 bool running = true;
@@ -54,6 +55,10 @@ void playButton(){
 
 void optionsButton(){
 	cout << "You clicked options!" << endl;
+}
+
+void creditsButton(){
+	cout << "I made this game." << endl;
 }
 
 void quitButton(){
@@ -132,11 +137,13 @@ int main(int argc, char *argv[]){
 	space = SOIL_load_OGL_texture("images/menu/space.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
 	options = SOIL_load_OGL_texture("images/menu/options.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
 	quitTex = SOIL_load_OGL_texture("images/menu/quit.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
+	credits = SOIL_load_OGL_texture("images/menu/credits.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
 	init();
-	buttons.push_back(button(0.0, 20, 50, 15, play, playButton));
-	buttons.push_back(button(0.0, -5, 50, 15, options, optionsButton));
+	buttons.push_back(button(0.0, 40, 45, 11, play, playButton));
+	buttons.push_back(button(0.0, 20, 45, 11, options, optionsButton));
+	buttons.push_back(button(0.0, 0, 45, 11, credits, creditsButton));
 	//Quits the game:
-	buttons.push_back(button(0.0, -30, 50, 15, quitTex, quitButton));
+	buttons.push_back(button(0.0, -20, 45, 11, quitTex, quitButton));
 
 	while(running){
 		update();
