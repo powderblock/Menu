@@ -6,7 +6,7 @@ extern int width, height;
 extern float aspect;
 
 void quit(int);
-bool mouse(float*, float*);
+void mouse(float*, float*);
 
 //Clamp a value to a range
 //Inside the header because inline functions need to be
