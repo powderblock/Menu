@@ -47,6 +47,7 @@ void update(){
 	FPSCap();
 }
 
+//Buttons functions:
 void playButton(){
 	cout << "You clicked play!" << endl;
 }
@@ -59,6 +60,7 @@ void quitButton(){
 	running = false;
 }
 
+//Check for input from the player:
 void events(){
 	SDL_Event event;
 	while(SDL_PollEvent(&event)){
@@ -66,11 +68,15 @@ void events(){
 			case SDL_QUIT:
 				running = false;
 				break;
-			
+				
+			//If the player clicks the mouse:
 			case SDL_MOUSEBUTTONDOWN:
+				//Set the x and y of the click to some vars:
 				mouseX = event.button.x;
 				mouseY = event.button.y;
+				//Run a function in util which converts those ints to workable ones:
 				mouse(&mouseX, &mouseY);
+				//Check for collision on the buttons:
 				for(int i = 0; i < buttons.size(); ++i){
 					buttons[i].wasClicked(mouseX, mouseY);
 				}
@@ -84,6 +90,7 @@ void events(){
 	}
 }
 
+//Set up OpenGL:
 void init(){
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -94,14 +101,18 @@ void init(){
 
 void render(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//Bind space to the background:
 	glBindTexture(GL_TEXTURE_2D, space);
+	//Draw the background:
 	draw(0, 0, 100, 100);
+	//Draw the buttons:
 	for(int i = 0; i < buttons.size(); ++i){
 		buttons[i].drawButton();
 	}
 	SDL_GL_SwapBuffers();
 }
 
+//Keep the FPS stable:
 void FPSCap(){
 	if(1000 / FPS > SDL_GetTicks() - start){
 		SDL_Delay(1000 / FPS - (SDL_GetTicks() - start));
@@ -111,9 +122,12 @@ void FPSCap(){
 int main(int argc, char *argv[]){
 	screen = SDL_SetVideoMode(width, height, 32, SDL_OPENGL);
 	SDL_WM_SetCaption("Menu", NULL);
+	//Start setting up textures:
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
+	//Enable transparency:
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//Load in some textures:
 	play = SOIL_load_OGL_texture("images/menu/play.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
 	space = SOIL_load_OGL_texture("images/menu/space.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
 	options = SOIL_load_OGL_texture("images/menu/options.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
@@ -121,6 +135,7 @@ int main(int argc, char *argv[]){
 	init();
 	buttons.push_back(button(0.0, 20, 50, 15, play, playButton));
 	buttons.push_back(button(0.0, -5, 50, 15, options, optionsButton));
+	//Quits the game:
 	buttons.push_back(button(0.0, -30, 50, 15, quitTex, quitButton));
 
 	while(running){
