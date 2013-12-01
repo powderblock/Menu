@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SDL/SDL.h>
 #include <SDL/SDL_opengl.h>
+#include <vector>
 #include "draw.h"
 #ifdef __WINDOWS__
 #undef main
@@ -9,7 +10,7 @@
 using namespace std;
 
 int FPS = 60;
-int width = 600, height = 480;
+int width = 600, height = 500;
 
 SDL_Surface *screen;
 
@@ -25,12 +26,27 @@ void update();
 struct button{
 	float x, y, w, h;
 	void (*onClick)(void);
-	button(float x, float y, float w, float h, void (*clickFunction) (void)): x(x), y(y), w(w), h(h), onClick(clickFunction){}
+	button(float, float, float, float, void (*) (void));
+	void wasClicked(float x, float y){
+	//Check for collision
+	}
 };
+
+button::button(float x, float y, float w, float h, void (*clickFunction) (void)): x(x), y(y), w(w), h(h), onClick(clickFunction){};
+
+vector<button> buttons;
 
 void update(){
 	events();
 	render();
+}
+
+void button1(){
+	cout << "You clicked the first button!" << endl;
+}
+
+void button2(){
+	cout << "You clicked the second button!" << endl;
 }
 
 void events(){
@@ -58,8 +74,9 @@ void init(){
 
 void render(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glColor3f(1, 1, 0);
-	draw(25.0, 25.0, 5.0, 5.0);
+	for(int i = 0; i < buttons.size(); ++i){
+	
+	}
 	SDL_GL_SwapBuffers();
 }
 
@@ -71,6 +88,9 @@ int main(int argc, char *argv[]){
 	screen = SDL_SetVideoMode(width, height, 32, SDL_OPENGL);
 	SDL_WM_SetCaption("Menu", NULL);
 	init();
+	buttons.push_back(button((width / 2 - (255 / 2)) / 12, 6, 21, 2, button1));
+	buttons.push_back(button((width / 2 - (255 / 2)) / 12, 9, 21, 2, button2));
+	
 	while(running){
 		update();
 	}
