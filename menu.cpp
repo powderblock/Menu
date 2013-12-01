@@ -22,13 +22,15 @@ void FPSCap();
 void init();
 void events();
 void update();
+void button1();
+void button2();
 
 struct button{
 	float x, y, w, h;
-	void (*onClick)(void);
+	void (*onClick) (void);
 	button(float, float, float, float, void (*) (void));
 	void wasClicked(float x, float y){
-	//Check for collision
+		//Check for collision
 	}
 };
 
@@ -75,7 +77,7 @@ void init(){
 void render(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	for(int i = 0; i < buttons.size(); ++i){
-	
+		draw(buttons[i].x, buttons[i].y, buttons[i].w, buttons[i].h);
 	}
 	SDL_GL_SwapBuffers();
 }
@@ -88,8 +90,8 @@ int main(int argc, char *argv[]){
 	screen = SDL_SetVideoMode(width, height, 32, SDL_OPENGL);
 	SDL_WM_SetCaption("Menu", NULL);
 	init();
-	buttons.push_back(button((width / 2 - (255 / 2)) / 12, 6, 21, 2, button1));
-	buttons.push_back(button((width / 2 - (255 / 2)) / 12, 9, 21, 2, button2));
+	buttons.push_back(button(0.0, 6.0, 21.0, 2.0, button1));
+	buttons.push_back(button(0.0, 8.0, 21.0, 2.0, button2));
 	
 	while(running){
 		update();
