@@ -139,11 +139,11 @@ int main(int argc, char *argv[]){
 	quitTex = SOIL_load_OGL_texture("images/menu/quit.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
 	credits = SOIL_load_OGL_texture("images/menu/credits.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
 	init();
-	buttons.push_back(button(0.0, 40, 45, 11, play, playButton));
-	buttons.push_back(button(0.0, 20, 45, 11, options, optionsButton));
-	buttons.push_back(button(0.0, 0, 45, 11, credits, creditsButton));
+	buttons.push_back(button(0.0, 30, 45, 11, play, playButton));
+	buttons.push_back(button(0.0, 10, 45, 11, options, optionsButton));
+	buttons.push_back(button(0.0, -10, 45, 11, credits, creditsButton));
 	//Quits the game:
-	buttons.push_back(button(0.0, -20, 45, 11, quitTex, quitButton));
+	buttons.push_back(button(0.0, -30, 45, 11, quitTex, quitButton));
 
 	while(running){
 		update();
