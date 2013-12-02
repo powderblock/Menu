@@ -16,6 +16,8 @@ using namespace std;
 //Vars:
 int FPS = 60;
 
+bool credit = false;
+
 float mouseX, mouseY;
 
 SDL_Surface *screen;
@@ -25,6 +27,7 @@ GLuint space;
 GLuint options;
 GLuint credits;
 GLuint quitTex;
+GLuint creditsText;
 
 bool running = true;
 Uint32 start;
@@ -58,7 +61,7 @@ void optionsButton(){
 }
 
 void creditsButton(){
-	cout << "I made this game." << endl;
+	credit = true;
 }
 
 void quitButton(){
@@ -111,8 +114,15 @@ void render(){
 	//Draw the background:
 	draw(0, 0, 100, 100);
 	//Draw the buttons:
-	for(int i = 0; i < buttons.size(); ++i){
-		buttons[i].drawButton();
+	if(!credit){
+		for(int i = 0; i < buttons.size(); ++i){
+			buttons[i].drawButton();
+		}
+	}
+	
+	if(credit){
+		glBindTexture(GL_TEXTURE_2D, creditsText);
+		draw(0, 0, 100, 100);
 	}
 	SDL_GL_SwapBuffers();
 }
@@ -138,6 +148,7 @@ int main(int argc, char *argv[]){
 	options = SOIL_load_OGL_texture("images/menu/options.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
 	quitTex = SOIL_load_OGL_texture("images/menu/quit.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
 	credits = SOIL_load_OGL_texture("images/menu/credits.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
+	creditsText = SOIL_load_OGL_texture("images/credits/credits.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y |SOIL_FLAG_NTSC_SAFE_RGB|SOIL_FLAG_COMPRESS_TO_DXT);
 	init();
 	buttons.push_back(button(-1, 30, 45, 11, play, playButton));
 	buttons.push_back(button(-1, 10, 45, 11, options, optionsButton));
